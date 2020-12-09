@@ -1,0 +1,27 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+    {% for entry in listing %}
+        <div>
+            <ul>
+                <a href="{%url 'listingpage' entry.title %}">{{entry.title}}</a>
+                : 
+                {{entry.description}}
+                <br>
+                price=
+                {% if entry.currprice == None %}
+                0
+                {%else%}
+                {{entry.currprice}}
+                {%endif%}
+                <br>
+                {% if entry.image %}
+                <img alt="image" src="{{entry.image}}" height="200">
+                {%endif%}
+            </ul>
+        </div>
+    {%empty%}
+        <ul>no active auctions</ul>
+    {%endfor%}
+{% endblock %}

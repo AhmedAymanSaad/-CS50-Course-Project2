@@ -1,0 +1,2 @@
+1. Clean up the code in the listing page and its view
+2. Make the website look better using styling (Try bootstrap and scss)

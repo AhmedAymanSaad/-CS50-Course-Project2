@@ -1,0 +1,65 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<a href="{%url 'listingpage' entry.title %}">{{entry.title}}</a>
+: 
+{{entry.description}}
+<br>
+price=
+{% if entry.currprice == None %}
+0
+{%else%}
+{{entry.currprice}}
+{%endif%}
+<br>
+{% if entry.image %}
+<img alt="image" src="{{entry.image}}" height="200">
+{%endif%}
+
+{% if user.is_authenticated %}
+    {%if watchlist%}
+    <form action="{% url 'listingpage' entry.title %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" name="removefromwatch" value="Remove From Watch List">
+    </form>
+    {%else%}
+    <form action="{% url 'listingpage' entry.title %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" name="addtowatch" value="Add to Watch List">
+    </form>
+    {%endif%}
+    {% if user == entry.currprice.user and entry.open == False %}
+    You won the auction
+    {%endif%}
+    {% if user == entry.user and entry.open == True %}
+    <form action="{% url 'listingpage' entry.title %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" name="closeauction" value="Close Auction">
+    </form>
+    {%endif%}
+    {% if user != entry.user and entry.open == True %}
+    <form action="{% url 'listingpage' entry.title %}" method="POST">
+        {% csrf_token %}
+        {{form}}
+        <input type="submit" value="Submit">
+    </form>
+    {%endif%}
+{% endif %}
+
+<div id="comments">
+    {% for comment in comments %}
+        <ul>{{comment}}</ul>
+    {%empty%}
+    Be the first to leave a comment<br>
+    {%endfor%}
+    {% if user.is_authenticated %}
+    Leave a comment:
+    <form action="{% url 'listingpage' entry.title %}" method="POST">
+        {% csrf_token %}
+        <input type="text" name="comment" >
+        <input type="submit" name="commented" value="Submit">
+    </form>
+    {% endif %}
+</div>
+
+{% endblock %}

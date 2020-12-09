@@ -1,0 +1,16 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+{%if user.is_authenticated%}
+<h2>Active Listings</h2>
+{% for entry in wlist %}
+    <ul>
+        <a href="{%url 'listingpage' entry.listings.title %}">{{entry.listings}}</a>
+    </ul>
+{%empty%}
+    <ul>Watch list empty </ul>
+{%endfor%}
+{%else%}
+Must be signed in to create to view your watch list.
+{%endif%}
+{% endblock %}

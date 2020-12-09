@@ -1,0 +1,16 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+{%if user.is_authenticated%}
+<form action="{%url 'createlisting'%}" method="POST">
+    {% csrf_token %}
+    <input type="text" name="title" placeholder="title">
+    <input type="text" name="description" placeholder="description">
+    <input type="url" name="image" placeholder="image url">
+    <input type="text" name="category" placeholder="category">
+    <input type="submit">
+</form>
+{%else%}
+Must be signed in to create a listing.
+{%endif%}
+{% endblock %}
